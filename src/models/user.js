@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ROLES } from "../constants/roles.js";  
 const userSchema= new mongoose.Schema({
     name:{
         type:String,
@@ -17,8 +18,9 @@ const userSchema= new mongoose.Schema({
     },
     role:{
         type:String,
-        enum:['student','instructor','admin'],
-        required:true,
+        enum:Object.values(ROLES),
+        default:ROLES.STUDENT,
+       
     },
 },{timestamps:true})
 

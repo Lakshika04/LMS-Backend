@@ -8,12 +8,12 @@ const courseSchema= new mongoose.Schema({
     },
     subtitle:{
         type:String,
-        required:true,
+       
         trim:true,
     },
     description:{
         type:String,
-        required:true,
+       
         trim:true,
     },
     instructor:{
@@ -23,21 +23,21 @@ const courseSchema= new mongoose.Schema({
     },
     price:{
      type:Number,
-     required:true,   
+      
     },
     category:{
         type:String,
-        required:true,
+      
         trim:true,
     },
     level:{
         type:String,
         enum:['beginner','intermediate','advance'],
-        required:true,
+       default:'beginner',
     },
     thumbnailUrl:{
         type:String,
-        required:true,
+       
     },
     published:{
         type:Boolean,
