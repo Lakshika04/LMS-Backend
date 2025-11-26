@@ -2,16 +2,17 @@ import mongoose from "mongoose";
 import dotenv from 'dotenv'
 dotenv.config();
 
-
-const connectDb= async()=>{
+const connectDb = async () => {
     try {
-        const mongoUrl=process.env.MONGODB_URL;
-        await mongoose.connect(mongoUrl)
-        console.log("database is connected successfully")
-
+        const mongoUrl = process.env.MONGODB_URL;
+        if (!mongoUrl) {
+            throw new Error('MONGODB_URL environment variable is not defined');
+        }
+        await mongoose.connect(mongoUrl);
+        console.log("Database connected successfully");
     } catch (error) {
-        console.log("connection is failed",error)
-        
+        console.error("Database connection failed:", error.message);
+        process.exit(1);
     }
 }
 
