@@ -5,16 +5,11 @@ dotenv.config()
 
 const verifyToken= async(req,res,next)=>{
     try {
-        const authHeader = req.headers.authorization
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return res.status(401).json({message: "Access token required"})
-        }
-        const tokenParts = authHeader.split(' ');
-        if (tokenParts.length !== 2) {
-            return res.status(401).json({message: "Invalid token format"});
-        }
-        const token = tokenParts[1];
+        const token = req.headers.authorization
+        console.log(token)
+       
         const decode = jwt.verify(token, process.env.JWT_SECRET_KEY)
+        console.log(decode)
         req.user = await User.findById(decode.id).select("-password")
         if (!req.user) {
             return res.status(401).json({message: "User not found"})
@@ -22,7 +17,7 @@ const verifyToken= async(req,res,next)=>{
         next();
     } catch (error) {
         if (error.name === 'JsonWebTokenError') {
-            return res.status(401).json({message: "Invalid token"})
+            return res.status(401).json({message: error.message})
         }
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json({message: "Token expired"})

@@ -11,12 +11,18 @@ const uploadVideoAndCreateLesson = async (req, res) => {
         }
 
         const { courseId, title, order, freePreview } = req.body;
-        const videoFile = req.file;
+        // Handle both single file and multiple files upload
+        const videoFile = req.file || (req.files && req.files[0]);
 
         validateRequiredFields(['courseId', 'title', 'order'], req.body);
         
         if (!videoFile) {
             return res.status(400).json({ message: 'Video file is required' });
+        }
+        
+        // Validate file type
+        if (!videoFile.mimetype.startsWith('video/')) {
+            return res.status(400).json({ message: 'Only video files are allowed' });
         }
 
         if (!validateObjectId(courseId)) {
