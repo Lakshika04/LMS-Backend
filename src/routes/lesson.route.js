@@ -4,7 +4,9 @@ import {
     uploadVideoAndCreateLesson, 
     getLessonsByCourse, 
     streamLesson, 
-    getImageKitAuth 
+    getImageKitAuth, 
+    updateLesson,
+    deleteLesson
 } from '../controllers/lesson.controller.js';
 import { authenticateToken } from '../middleware/auth.middleware.js';
 
@@ -55,5 +57,7 @@ router.post('/upload-video', authenticateToken, upload.single('video'), handleMu
 router.get('/course/:courseId', getLessonsByCourse);
 router.get('/stream/:lessonId', authenticateToken, streamLesson);
 router.get('/imagekit-auth', authenticateToken, getImageKitAuth);
+router.put("/:lessonId", authenticateToken, updateLesson);
+router.delete("/:lessonId", authenticateToken, deleteLesson);
 
 export default router;

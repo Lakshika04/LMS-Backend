@@ -157,10 +157,49 @@ const getImageKitAuth = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+const updateLesson= async(req,res)=>{
+    try {
+        const {lessonId}=req.params
+        const {title,order,freePreview,duration}=req.body
+        const lesson=await Lesson.findById(lessonId).populate("course")
+        if(!lesson){
+            return res.status(404).json({message:"lesson not found"})
+        }
+        if(lesson.course.instructor.toString()!==req.user._id.toString() && req.user.role!=="admin"){
+            return res.status(403).json({message:"unauthorized user"})
+        }
 
+        const updateLesson=await Lesson.findByIdAndUpdate(lessonId,{title,order,freePreview,duration},{new:true})
+        res.status(200).json({message:"updated successfully",updateLesson})
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({message:error.message})
+    }
+}
+
+const deleteLesson=async(req,res)=>{
+    try {
+        const {lessonId}=req.params
+        const lesson=await Lesson .findById(lessonId).populate("course")
+        if(!lesson){
+            return res.status(404).json({message:"lesson not found"})
+        }
+        if(lesson.course.instructor.toString()!==req.user._id.toString() && req.user.role!=="admin"){
+            return res.status(403).json({message:"unauthorized user"})
+        }
+
+        const deleteCourse=await Lesson.findByIdAndDelete(lessonId)
+        res.status(200).json({message:"deleted successfully",deleteCourse})
+    } catch (error) {
+             console.log(error.message)
+        res.status(500).json({message:error.message})
+    }
+}
 export { 
     uploadVideoAndCreateLesson, 
     getLessonsByCourse, 
     streamLesson, 
-    getImageKitAuth 
+    getImageKitAuth,
+    updateLesson,
+    deleteLesson
 };
