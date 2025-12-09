@@ -11,6 +11,6 @@ router.get('/', getCourses);
 // Protected routes - Instructor only
 router.post('/', authenticateToken, authorizedRoles('instructor'), addCourse);
 router.put("/:courseId", authenticateToken, updateCourse);
-router.delete("/:courseId", authenticateToken, deleteCourse);
+router.delete("/:courseId", authenticateToken,deleteCourse);
 
 export default router;

@@ -11,7 +11,7 @@ const progressSchema= new mongoose.Schema({
         required:true,
     },
     completedLessons:{
-        type:[{type:mongoose.Schema.Types.ObjectId, ref:'Lesson'}],
+        type:[{type:mongoose.Schema.Types.ObjectId,ref:'Lesson'}],
     },
     lastLesson:{
         type:mongoose.Schema.Types.ObjectId,
